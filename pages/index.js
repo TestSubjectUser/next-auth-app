@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import Success from "@/components/ui/Success";
 import Failed from "@/components/ui/Failed";
 import { useAuth } from "../context/auth-context";
+import Cookies from "js-cookie";
 
 function handleSubmit(event, setStatus, router, setAuth) {
   event.preventDefault();
@@ -30,6 +31,7 @@ function handleSubmit(event, setStatus, router, setAuth) {
       };
       // Store the auth data in context and localStorage
       setAuth(authData);
+      Cookies.set("authToken", JSON.stringify(authData), { expires: 7 }); // Store token in cookies (expires in 7 days)
 
       setTimeout(() => {
         router.push("/dashboard");
