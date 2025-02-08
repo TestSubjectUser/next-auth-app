@@ -30,7 +30,7 @@ function handleSubmit(event, setStatus, router, setAuth) {
         token: data.cred.password,
       };
       // Store the auth data in context and localStorage
-      setAuth(authData);
+      // setAuth(authData);
       Cookies.set("authToken", JSON.stringify(authData), { expires: 7 }); // Store token in cookies (expires in 7 days)
 
       setTimeout(() => {
@@ -42,7 +42,7 @@ function handleSubmit(event, setStatus, router, setAuth) {
       console.error(error);
 
       setTimeout(() => {
-        router.push("/login");
+        router.push("/");
       }, 2000);
     });
 }
@@ -51,6 +51,15 @@ export default function Home() {
   const [status, setStatus] = useState(null);
   const router = useRouter();
   const { setAuth } = useAuth();
+
+  // Check if the user already has an authToken in cookies
+  useEffect(() => {
+    const authToken = Cookies.get("authToken");
+    if (authToken) {
+      // If token exists, navigate directly to the dashboard
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   useEffect(() => {
     if (status) {

@@ -16,6 +16,7 @@ export default function Dashboard() {
       {console.log(authData.user)}
       <h1>Welcome, {authData.user}</h1>
       <p>Your token: {authData.token}</p>
+      <button onClick={() => Cookies.remove("authToken")}>Logout</button>
     </div>
   );
 }
