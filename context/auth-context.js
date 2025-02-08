@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
 
   const setAuth = (data) => {
     setAuthData(data);
+    console.log("local storage data: ", data);
     localStorage.setItem("authData", JSON.stringify(data)); // Store in localStorage
   };
 

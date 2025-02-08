@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Success from "@/components/ui/Success";
 import Failed from "@/components/ui/Failed";
+import { useAuth } from "../context/auth-context";
 
-function handleSubmit(event, setStatus, router) {
+function handleSubmit(event, setStatus, router, setAuth) {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
   const dataOb = {
@@ -21,7 +22,14 @@ function handleSubmit(event, setStatus, router) {
     .then((response) => response.json())
     .then((data) => {
       setStatus("success");
-      console.log(data);
+      console.log("data: ", data);
+
+      const authData = {
+        user: data.cred.email,
+        token: data.cred.password,
+      };
+      // Store the auth data in context and localStorage
+      setAuth(authData);
 
       setTimeout(() => {
         router.push("/dashboard");
@@ -40,6 +48,7 @@ function handleSubmit(event, setStatus, router) {
 export default function Home() {
   const [status, setStatus] = useState(null);
   const router = useRouter();
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     if (status) {
@@ -59,7 +68,7 @@ export default function Home() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form
           className="space-y-6"
-          onSubmit={(e) => handleSubmit(e, setStatus, router)}
+          onSubmit={(e) => handleSubmit(e, setStatus, router, setAuth)}
         >
           <div>
             <label
